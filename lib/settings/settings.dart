@@ -40,7 +40,7 @@ class _SettingsState extends State<Settings> {
                   applicationVersion: '0.1',
                   applicationIcon: Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Image.asset('icon/icon.png', width: 48, height: 48,),
+                    child: Image.asset('icon/icon.png', width: 48, height: 48,),//TODO: add asset to pubspec.yaml
                   )
                 ),
               )
