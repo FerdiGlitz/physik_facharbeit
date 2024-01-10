@@ -135,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Expanded(
           child: Slider (
               value: abstandZumSensor,
+              min: 200,
               max: 30000,
               inactiveColor: Colors.grey.shade600,
               activeColor: Colors.limeAccent,

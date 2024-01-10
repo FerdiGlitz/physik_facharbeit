@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/line_painter.dart';
 import 'package:physik_facharbeit/line.dart';
@@ -155,10 +157,29 @@ class _SimTopViewState extends State<SimTopView> {
 
   List<Line> maximaBerechnen() {
     List<Line> lines = [];
-    for (int i = 0; abstandZumNulltenMaximum(600, widget.spaltabstand, widget.abstandZumSensor, i) * 0.01 * MediaQuery.of(context).size.height * 0.0005 < MediaQuery.of(context).size.height * 0.28; i++) {
-      lines.add(Line(lineStart: resultLineStart(), lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 + abstandZumNulltenMaximum(600, widget.spaltabstand, widget.abstandZumSensor, i) * 0.01 * MediaQuery.of(context).size.height * 0.0005)));
-      lines.add(Line(lineStart: resultLineStart(), lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 - abstandZumNulltenMaximum(600, widget.spaltabstand, widget.abstandZumSensor, i) * 0.01 * MediaQuery.of(context).size.height * 0.0005)));
+    for (int i = 0; calculateLine(wellenlaenge: 600, d: widget.spaltabstand, e: widget.abstandZumSensor, k: i)[0].lineEnd.dy * MediaQuery.of(context).size.height * 0.0006 < MediaQuery.of(context).size.height * 0.28; i++) {
+      ///alpha falsch, neues winkelbasiertes System in Arbeit
+      lines.addAll(calculateLine(wellenlaenge: 600, d: widget.spaltabstand, e: widget.abstandZumSensor, k: i));
     }
     return lines;
+  }
+
+  List<Line> calculateLine ({required double wellenlaenge, required double d, required double e, required int k}) {
+    double alpha = alphaBerechnen(e, abstandZumNulltenMaximum(wellenlaenge, d, e, k));
+    double ePixel = MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005 - resultLineStart().dx;
+    double ak = abstandZumNulltenMaximum(wellenlaenge, d, e, k);
+    double stretchFactor = ePixel / e; ///epixel / e = faktor für ak
+    double akUI = ak * stretchFactor;
+    //debugPrint('Alpha real $k. Maximum: $alpha}');
+    debugPrint('Alpha UI $k. Maximum: ${alphaBerechnen(ePixel, akUI).toString()}');
+    Line lineBottom = Line(lineStart: resultLineStart(), lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 + akUI));
+    Line lineTop = Line(lineStart: resultLineStart(), lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 - akUI));
+    return [lineBottom, lineTop];
+  }
+
+  double alphaBerechnen(double e, double ak) {
+    double laengeAnkathete = e;
+    double laengeGegenkathete = ak;
+    return atan(laengeGegenkathete / laengeAnkathete) * (180 / pi); ///Grad
   }
 }
