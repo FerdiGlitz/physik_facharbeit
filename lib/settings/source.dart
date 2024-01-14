@@ -9,7 +9,7 @@ class Source {
 
   Widget toWidget() {
     return InkWell(
-        child: Text('$usage: $source', textScaleFactor: 2,),
+        child: SelectableText('$usage: $source', textScaleFactor: 2,),
         onTap: () => launchUrl(Uri.parse(source))
     );
   }
