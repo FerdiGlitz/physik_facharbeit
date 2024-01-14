@@ -266,7 +266,7 @@ class _SimTopViewState extends State<SimTopView> {
   }
 
   ///Farbe der Linien berechnen mithilfe des Algorithmus von Bruton
-  ///Quelle: http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf
+  ///Quelle für Formel: http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf
   Color farbeBerechnen(double wellenlaenge) {
     int r;
     int g;

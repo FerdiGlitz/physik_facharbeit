@@ -19,17 +19,18 @@ class _SourcesState extends State<Sources> {
         title: const Text('Quellen'),
       ),
       body: Center(
-          child: ListView.builder(
+          child: ListView.separated(
             itemCount: formeln.length,
             itemBuilder: (BuildContext context, int index) {
               return formeln[index].toWidget();
             },
+            separatorBuilder: (BuildContext context, int index) => const Divider(),
           )
       ),
     );
   }
   
   List<Source> formeln = [
-    Source(usage: "Planck - Konstante", source: "https://de.wikipedia.org/wiki/Planck-Konstante")
+    Source(usage: "Formel für λ zu RGB", source: "http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf")
   ];
 }
