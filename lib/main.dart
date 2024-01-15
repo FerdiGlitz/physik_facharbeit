@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Faxharbeit von Ferdinand Glitz',
+      title: 'Facharbeit von Ferdinand Glitz',
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(),
         useMaterial3: true,
