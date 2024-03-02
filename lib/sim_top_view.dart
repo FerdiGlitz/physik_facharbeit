@@ -1,21 +1,26 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:physik_facharbeit/line_painter.dart';
-import 'package:physik_facharbeit/line.dart';
+import 'line.dart';
+import 'line_painter.dart';
 
 class SimTopView extends StatefulWidget {
+  final double height;
+  final double width;
+
   final double wellenlaenge;
   final double spaltbreite;
   final double spaltabstand;
   final double abstandZumSensor;
 
-  const SimTopView(
-      {Key? key,
-      required this.wellenlaenge,
-      required this.spaltbreite,
-      required this.spaltabstand,
-      required this.abstandZumSensor})
-      : super(key: key);
+  const SimTopView({
+    Key? key,
+    required this.height,
+    required this.width,
+    required this.wellenlaenge,
+    required this.spaltbreite,
+    required this.spaltabstand,
+    required this.abstandZumSensor
+  }) : super(key: key);
 
   @override
   State<SimTopView> createState() => _SimTopViewState();
@@ -31,18 +36,18 @@ class _SimTopViewState extends State<SimTopView> {
     Line(
         lineStart: resultLineStart(),
         lineEnd: Offset(
-            MediaQuery.of(context).size.width -
-                MediaQuery.of(context).size.width * 0.005,
-            MediaQuery.of(context).size.height * 0.28 +
+            widget.width -
+                widget.width * 0.005,
+            widget.height * 0.28 +
                 abstandZumNulltenMaximum(
-                        widget.wellenlaenge, widget.spaltabstand, widget.abstandZumSensor, 1) *
+                    widget.wellenlaenge, widget.spaltabstand, widget.abstandZumSensor, 1) *
                     0.01))
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: hintergrundFarbe,
+      color: hintergrundFarbe.withOpacity(1),
       child: Stack(children: [
         Row(
           children: [
@@ -52,7 +57,7 @@ class _SimTopViewState extends State<SimTopView> {
                   lineColor: farbeBerechnen(widget.wellenlaenge),
                   lineWidth: widget.spaltbreite *
                       0.01 *
-                      MediaQuery.of(context).size.height *
+                      widget.height *
                       0.0005,
                   lines: [
                     //Linie zum oberen Spalt
@@ -60,34 +65,34 @@ class _SimTopViewState extends State<SimTopView> {
                         lineStart: elektronenKanonePositionPixel(),
                         lineEnd: Offset(
                             abstandKanoneSpaltPixelBerechnen() +
-                                MediaQuery.of(context).size.width * 0.1025,
-                            MediaQuery.of(context).size.height * 0.28 -
+                                widget.width * 0.1025,
+                            widget.height * 0.28 -
                                 (widget.spaltabstand *
-                                        0.01 *
-                                        MediaQuery.of(context).size.height *
-                                        0.0005) /
+                                    0.01 *
+                                    widget.height *
+                                    0.0005) /
                                     2 -
                                 (widget.spaltbreite *
-                                        0.01 *
-                                        MediaQuery.of(context).size.height *
-                                        0.0005) /
+                                    0.01 *
+                                    widget.height *
+                                    0.0005) /
                                     2)),
                     //Linie zum unteren Spalt
                     Line(
                         lineStart: elektronenKanonePositionPixel(),
                         lineEnd: Offset(
                             abstandKanoneSpaltPixelBerechnen() +
-                                MediaQuery.of(context).size.width * 0.1025,
-                            MediaQuery.of(context).size.height * 0.28 +
+                                widget.width * 0.1025,
+                            widget.height * 0.28 +
                                 (widget.spaltabstand *
-                                        0.01 *
-                                        MediaQuery.of(context).size.height *
-                                        0.0005) /
+                                    0.01 *
+                                    widget.height *
+                                    0.0005) /
                                     2 +
                                 (widget.spaltbreite *
-                                        0.01 *
-                                        MediaQuery.of(context).size.height *
-                                        0.0005) /
+                                    0.01 *
+                                    widget.height *
+                                    0.0005) /
                                     2)),
                   ]),
             ),
@@ -96,7 +101,7 @@ class _SimTopViewState extends State<SimTopView> {
               painter: LinePainter(
                   lineColor: farbeBerechnen(widget.wellenlaenge),
                   lineWidth:
-                      600 * 0.01 * MediaQuery.of(context).size.height * 0.0005,
+                  600 * 0.01 * widget.height * 0.0005,
                   lines: maximaBerechnen()),
             ),
           ],
@@ -104,13 +109,13 @@ class _SimTopViewState extends State<SimTopView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            elektronenKanone(),
+            lampe(),
             SizedBox(
               width: abstandKanoneSpaltPixelBerechnen(),
             ),
             spalt(),
             SizedBox(
-              width: MediaQuery.of(context).size.width *
+              width: widget.width *
                   widget.abstandZumSensor *
                   0.00002,
             ),
@@ -121,11 +126,11 @@ class _SimTopViewState extends State<SimTopView> {
     );
   }
 
-  Widget elektronenKanone() {
+  Widget lampe() {
     return Container(
       color: aufbauFarbe,
-      height: MediaQuery.of(context).size.height * 0.02,
-      width: MediaQuery.of(context).size.width * 0.1,
+      height: widget.height * 0.02,
+      width: widget.width * 0.1,
     );
   }
 
@@ -135,43 +140,43 @@ class _SimTopViewState extends State<SimTopView> {
       children: [
         Container(
           color: aufbauFarbe,
-          height: MediaQuery.of(context).size.height * 0.1 -
+          height: widget.height * 0.1 -
               widget.spaltbreite *
                   0.01 *
-                  MediaQuery.of(context).size.height *
+                  widget.height *
                   0.0005,
-          width: MediaQuery.of(context).size.width * 0.005,
+          width: widget.width * 0.005,
         ),
         SizedBox(
           height: widget.spaltbreite *
               0.01 *
-              MediaQuery.of(context).size.height *
+              widget.height *
               0.0005,
-          width: MediaQuery.of(context).size.width * 0.005,
+          width: widget.width * 0.005,
         ),
         Container(
           color: aufbauFarbe,
           height: widget.spaltabstand *
               0.01 *
-              MediaQuery.of(context).size.height *
+              widget.height *
               0.0005,
-          width: MediaQuery.of(context).size.width * 0.005,
+          width: widget.width * 0.005,
         ),
         SizedBox(
           height: widget.spaltbreite *
               0.01 *
-              MediaQuery.of(context).size.height *
+              widget.height *
               0.0005,
-          width: MediaQuery.of(context).size.width * 0.005,
+          width: widget.width * 0.005,
         ),
         Container(
           color: aufbauFarbe,
-          height: MediaQuery.of(context).size.height * 0.1 -
+          height: widget.height * 0.1 -
               widget.spaltbreite *
                   0.01 *
-                  MediaQuery.of(context).size.height *
+                  widget.height *
                   0.0005,
-          width: MediaQuery.of(context).size.width * 0.005,
+          width: widget.width * 0.005,
         ),
       ],
     );
@@ -180,7 +185,7 @@ class _SimTopViewState extends State<SimTopView> {
   Widget schirm() {
     return Container(
       height: double.infinity,
-      width: MediaQuery.of(context).size.width * 0.005,
+      width: widget.width * 0.005,
       color: aufbauFarbe,
     );
   }
@@ -188,30 +193,30 @@ class _SimTopViewState extends State<SimTopView> {
   Offset resultLineStart() {
     return Offset(
         abstandKanoneSpaltPixelBerechnen() +
-            MediaQuery.of(context).size.width * 0.1025,
-        MediaQuery.of(context).size.height * 0.28);
+            widget.width * 0.1025,
+        widget.height * 0.28);
   }
 
   Offset nulltesMaximumLineTarget() {
     return Offset(
-        MediaQuery.of(context).size.width -
-            MediaQuery.of(context).size.width * 0.005,
-        MediaQuery.of(context).size.height * 0.28);
+        widget.width -
+            widget.width * 0.005,
+        widget.height * 0.28);
   }
 
   Offset elektronenKanonePositionPixel() {
-    return Offset(MediaQuery.of(context).size.width * 0.1,
-        MediaQuery.of(context).size.height * 0.28);
+    return Offset(widget.width * 0.1,
+        widget.height * 0.28);
   }
 
   double abstandKanoneSpaltPixelBerechnen() {
-    return MediaQuery.of(context).size.width -
-        (MediaQuery.of(context).size.width * widget.abstandZumSensor * 0.00002 +
-            MediaQuery.of(context).size.width * 0.11);
+    return widget.width -
+        (widget.width * widget.abstandZumSensor * 0.00002 +
+            widget.width * 0.11);
   }
 
-  ///berechnet abstand des k.Maximums zum 0.Maximum (ak)
-  ///d = Abstand zwischen Mittelpunkten der Spalte = Spaltabstand + Spaltbreite
+  ///berechnet abstand des k.Maximums zum 0.Maximum (ak) in nm
+  ///d = Spaltabstand
   ///e = Abstand zwischen Doppelspalt und Schirm
   ///k element von {1; 2; 3; ...}
   ///line target = Höhe des Doppelspaltes + ak (in Pixel)
@@ -226,7 +231,7 @@ class _SimTopViewState extends State<SimTopView> {
 
   List<Line> maximaBerechnen() {
     List<Line> lines = [];
-    for (int i = 0; i < anzahlMaximaBerechnen(widget.spaltbreite, widget.wellenlaenge) && calculateLine(wellenlaenge: widget.wellenlaenge, d: widget.spaltabstand, e: widget.abstandZumSensor, k: i)[0].lineEnd.dy * MediaQuery.of(context).size.height * 0.0006 < MediaQuery.of(context).size.height; i++) {
+    for (int i = 0; i < anzahlMaximaBerechnen(widget.spaltbreite, widget.wellenlaenge) && calculateLine(wellenlaenge: widget.wellenlaenge, d: widget.spaltabstand, e: widget.abstandZumSensor, k: i)[0].lineEnd.dy * widget.height * 0.0006 < widget.height; i++) {
       lines.addAll(calculateLine(
           wellenlaenge: widget.wellenlaenge,
           d: widget.spaltabstand,
@@ -241,7 +246,7 @@ class _SimTopViewState extends State<SimTopView> {
   ///e = Abstand zwischen Doppelspalt und Schirm
   ///k element von {1; 2; 3; ...}
   List<Line> calculateLine({required double wellenlaenge, required double d, required double e, required int k}) {
-    double ePixel = MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005 - resultLineStart().dx;
+    double ePixel = widget.width - widget.width * 0.005 - resultLineStart().dx;
     double ak = abstandZumNulltenMaximum(wellenlaenge, d, e, k);
     double stretchFactor = ePixel / e;
 
@@ -250,11 +255,11 @@ class _SimTopViewState extends State<SimTopView> {
     //debugPrint('Alpha UI $k. Maximum: ${alphaBerechnen(ePixel, akUI).toString()}');
     Line lineBottom = Line(
         lineStart: resultLineStart(),
-        lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 + akUI)
+        lineEnd: Offset(widget.width - widget.width * 0.005, widget.height * 0.28 + akUI)
     );
     Line lineTop = Line(
         lineStart: resultLineStart(),
-        lineEnd: Offset(MediaQuery.of(context).size.width - MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.28 - akUI)
+        lineEnd: Offset(widget.width - widget.width * 0.005, widget.height * 0.28 - akUI)
     );
     return [lineBottom, lineTop];
   }

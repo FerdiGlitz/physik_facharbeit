@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Source {
   String usage;
@@ -10,7 +9,6 @@ class Source {
   Widget toWidget() {
     return InkWell(
         child: SelectableText('$usage: $source', textScaleFactor: 2,),
-        onTap: () => launchUrl(Uri.parse(source))
     );
   }
 }
