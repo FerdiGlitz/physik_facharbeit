@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:physik_facharbeit/sim_calculator.dart';
+
+import 'line_painter.dart';
 
 class SimResultView extends StatefulWidget {
-  final double height;
-  final double width;
-  final double wellenlaenge;
-  final double spaltbreite;
-  final double spaltabstand;
-  final double abstandZumSensor;
+  final SimCalculator simCalculator;
 
   const SimResultView({
     Key? key,
-    required this.height,
-    required this.width,
-    required this.wellenlaenge,
-    required this.spaltbreite,
-    required this.spaltabstand,
-    required this.abstandZumSensor
+    required this.simCalculator
   }) : super(key: key);
 
   @override
@@ -23,20 +16,29 @@ class SimResultView extends StatefulWidget {
 }
 
 class _SimResultViewState extends State<SimResultView> {
+  Color hintergrundFarbe = Colors.white70;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          color: Colors.green,
-          height: widget.height * 0.9,
-          width: widget.width,
+          color: hintergrundFarbe,
+          height: widget.simCalculator.height * 0.52,
+          width: widget.simCalculator.width,
+          child: CustomPaint(
+            size: const Size.fromWidth(0.5),
+            painter: LinePainter(
+                lineColor: widget.simCalculator.farbeBerechnen(),
+                lineWidth: 600 * 0.01 * widget.simCalculator.height * 0.0005,
+                lines: widget.simCalculator.alphaLinienBerechnen()
+            ),
+          ),
         ),
         Container(
           color: Theme.of(context).colorScheme.background,
-          width: widget.width,
-          height: widget.height * 0.1,
+          width: widget.simCalculator.width,
+          height: widget.simCalculator.height * 0.04,
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
