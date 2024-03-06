@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:physik_facharbeit/sim_ui.dart';
 
 import 'line.dart';
 
@@ -43,18 +44,21 @@ class SimCalculator {
   ///k element von {1; 2; 3; ...}
   ///line target = Höhe des Doppelspaltes + ak (in Pixel)
   double abstandZumNulltenMaximum(int k) {
-    //debugPrint("Wellenlänge: $wellenlaenge");
-    //debugPrint("Spaltabstand: $spaltabstand");
-    //debugPrint("Abstand zum Schirm: $abstandZumSchirm");
-    double ak = tan(asin(k * wellenlaenge / spaltabstand)) * abstandZumSchirm;
+    double ak = tan(asin(k * wellenlaenge / spaltabstand)) * abstandZumSchirm;///Alte Formel
+    if (SimUI.useNewWrongFormula) {
+      double o = (k * wellenlaenge)/spaltabstand;
+      ak = sqrt(((o*o)*(abstandZumSchirm * abstandZumSchirm))/((1-o)*(1-o)));///neue Formel
+    }
     //debugPrint(ak.toString());
     return ak;
   }
 
+  ///Berechnet die Anzahl der Maxima
   int anzahlMaximaBerechnen() {
     return spaltbreite ~/ wellenlaenge;
   }
 
+  ///Berechnet alle Linien für die vorhandenen Maxima
   List<Line> maximaBerechnen() {
     List<Line> lines = [];
     for (int i = 0; i < anzahlMaximaBerechnen(); i++) {
@@ -67,6 +71,7 @@ class SimCalculator {
     return lines;
   }
 
+  ///Berechnet die Linie in der Darstellung für das k. Maximum
   ///k element von {1; 2; 3; ...}
   List<Line> calculateLine({required int k}) {
     double ePixel = width - width * 0.005 - resultLineStart().dx;
@@ -93,6 +98,7 @@ class SimCalculator {
     return atan(laengeGegenkathete / laengeAnkathete) * (180 / pi);///Grad
   }
 
+  ///Berechnet den Auslenkungswinkel für alle Maxima
   List<double> maximaBerechnenAlpha() {
     List<double> result = [];
     for (int i = 0; i < anzahlMaximaBerechnen(); i++) {
@@ -101,6 +107,7 @@ class SimCalculator {
     return result;
   }
 
+  ///Berechnet die Linien für die Maxima in der Schirmansicht
   List<Line> alphaLinienBerechnen() {
     List<double> maxima = maximaBerechnenAlpha();
     List<Line> result = [];

@@ -6,6 +6,7 @@ import 'package:physik_facharbeit/sim_top_view.dart';
 class SimUI extends StatefulWidget {
   final double height;
   final double width;
+  static bool useNewWrongFormula = false;
 
   const SimUI({super.key, required this.height, required this.width});
 
@@ -72,7 +73,27 @@ class _SimUIState extends State<SimUI> {
                   wellenlaengeSlider(),
                   spaltbreiteSlider(),
                   spaltabsstandSlider(),
-                  abstandZumSensorSlider()
+                  abstandZumSensorSlider(),
+                  Text(
+                    'Auslenkungswinkel des 1. Maximums: ${simCalculator.alphaBerechnen(1).round().toString()}°',
+                    textScaler: const TextScaler.linear(1.5),
+                  ),
+                  Text(
+                    'Abstand zum 0. Maximum des 1. Maximums: ${simCalculator.abstandZumNulltenMaximum(1).round().toString()}nm',
+                    textScaler: const TextScaler.linear(1.5),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Neue Formel verwenden',
+                        textScaler: TextScaler.linear(1.5),
+                      ),
+                      Switch(value: SimUI.useNewWrongFormula, onChanged: (bool newValue) {setState(() {
+                        SimUI.useNewWrongFormula = newValue;
+                      });})
+                    ],
+                  )
                 ],
               ),
             )

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Facharbeit von Ferdinand Glitz',
       theme: ThemeData(
-        colorScheme: const ColorScheme.dark(),
+        colorScheme: const ColorScheme.dark(primary: Colors.yellowAccent),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Facharbeit von Ferdinand Glitz'),
