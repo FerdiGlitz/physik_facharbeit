@@ -1,16 +1,13 @@
-# physik_facharbeit
+# Physik-Facharbeit
 
-A new Flutter project.
+Simulation des Doppelspaltversuchs
 
-## Getting Started
+## Folgendes wird simuliert:
 
-This project is a starting point for a Flutter application.
+- Vogelperspektive mit Visualisierung der Interferenzmaxima
+- Schirmbild
 
-A few resources to get you started if this is your first Flutter project:
+## Quellen:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Formel für λ zu RGB](http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf)
+- [Formel für Lichtintensität](https://studyflix.de/ingenieurwissenschaften/doppelspalt-6580)
