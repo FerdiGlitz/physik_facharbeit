@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
-import 'line.dart';
-import 'line_painter.dart';
+import 'lines/line.dart';
+import 'painters/line_painter.dart';
 
 class SimTopView extends StatefulWidget {
   final SimCalculator simCalculator;
@@ -38,42 +38,53 @@ class _SimTopViewState extends State<SimTopView> {
             CustomPaint(
               size: const Size.fromWidth(0.5),
               painter: LinePainter(
-                  lineColor: widget.simCalculator.farbeBerechnen(),
-                  lineWidth: widget.simCalculator.height * 0.2,
-                  lines: [
-                    //Linie zum Spalt
-                    Line(
-                        lineStart: widget.simCalculator.lampePositionPixel(),
-                        lineEnd: Offset(
-                            widget.simCalculator.abstandLampeSpaltPixelBerechnen() + widget.simCalculator.width * 0.1025,
-                            widget.simCalculator.lampePositionPixel().dy
-                        )
-                    ),
-                  ]
-              ),
-            ),
-            CustomPaint(
-              size: const Size.fromWidth(0.5),
-              painter: LinePainter(
-                  lineColor: widget.simCalculator.farbeBerechnen(),
-                  lineWidth:
-                  600 * 0.01 * widget.simCalculator.height * 0.0005,
-                  lines: widget.simCalculator.maximaBerechnen()),
+                simCalculator: widget.simCalculator,
+                lineColor: widget.simCalculator.farbeBerechnen(),
+                lineWidth: 600 * 0.01 * widget.simCalculator.height * 0.0005,
+                lines: widget.simCalculator.maximaBerechnen()),
             ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            lampe(),
-            SizedBox(
-              width: widget.simCalculator.abstandLampeSpaltPixelBerechnen(),
+            Stack(
+              children: [
+                Container(
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      lampe(),
+                      SizedBox(
+                        width: widget.simCalculator.abstandLampeSpaltPixelBerechnen(),
+                      ),
+                      spalt(),
+                    ],
+                  ),
+                ),
+                CustomPaint(
+                  size: const Size.fromWidth(0.5),
+                  painter: LinePainter(
+                      simCalculator: widget.simCalculator,
+                      lineColor: widget.simCalculator.farbeBerechnen(),
+                      lineWidth: widget.simCalculator.height * 0.2,
+                      lines: [
+                        //Linie zum Spalt
+                        Line(
+                            lineStart: widget.simCalculator.lampePositionPixel(),
+                            lineEnd: Offset(
+                                widget.simCalculator.abstandLampeSpaltPixelBerechnen() + widget.simCalculator.width * 0.1025,
+                                widget.simCalculator.lampePositionPixel().dy
+                            )
+                        ),
+                      ]
+                  ),
+                ),
+              ],
             ),
-            spalt(),
             SizedBox(
-              width: widget.simCalculator.width *
-                  widget.simCalculator.abstandZumSchirm *
-                  0.00002,
+              width: widget.simCalculator.width * widget.simCalculator.abstandZumSchirm * 0.00002,
             ),
             schirm()
           ],

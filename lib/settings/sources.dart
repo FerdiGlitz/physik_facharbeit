@@ -30,6 +30,7 @@ class _SourcesState extends State<Sources> {
   }
   
   List<Source> formeln = [
-    Source(usage: "Formel für λ zu RGB", source: "http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf")
+    Source(usage: "Formel für λ zu RGB", source: "http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf"),
+    Source(usage: "Formel für Lichtintensität", source: "https://studyflix.de/ingenieurwissenschaften/doppelspalt-6580")
   ];
 }

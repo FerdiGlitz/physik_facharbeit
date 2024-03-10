@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:physik_facharbeit/painters/intensity_line_painter.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
-
-import 'line_painter.dart';
+import 'painters/line_painter.dart';
 
 class SimResultView extends StatefulWidget {
   final SimCalculator simCalculator;
@@ -26,14 +26,31 @@ class _SimResultViewState extends State<SimResultView> {
           color: hintergrundFarbe,
           height: widget.simCalculator.height * 0.52,
           width: widget.simCalculator.width,
-          child: CustomPaint(
-            size: const Size.fromWidth(0.5),
-            painter: LinePainter(
-                lineColor: widget.simCalculator.farbeBerechnen(),
-                lineWidth: 600 * 0.01 * widget.simCalculator.height * 0.0005,
-                lines: widget.simCalculator.alphaLinienBerechnen()
-            ),
-          ),
+          child: Stack(
+            children: [
+              ///Schirmbild nach Formel für Lichtintensität
+              CustomPaint(
+                size: const Size.fromWidth(0.5),
+                painter: IntensityLinePainter(
+                    simCalculator: widget.simCalculator,
+                    lineColor: widget.simCalculator.farbeBerechnen(),
+                    lineWidth: 1,
+                    ///lines: widget.simCalculator.alphaLinienBerechnen()
+                    lines: widget.simCalculator.calculateIntensityLines()
+                ),
+              ),
+              ///Linien für Maxima nach Formel zur Berechnung der Maxima
+              CustomPaint(
+                size: const Size.fromWidth(0.5),
+                painter: LinePainter(
+                    simCalculator: widget.simCalculator,
+                    lineColor: Colors.red,
+                    lineWidth: 5,
+                    lines: widget.simCalculator.alphaLinienBerechnen()
+                ),
+              ),
+            ],
+          )
         ),
         Container(
           color: Theme.of(context).colorScheme.background,

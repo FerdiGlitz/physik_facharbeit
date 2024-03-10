@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:physik_facharbeit/sim_ui.dart';
-
-import 'line.dart';
+import 'package:physik_facharbeit/lines/intensity_line.dart';
+import 'lines/line.dart';
 
 class SimCalculator {
   double height;
@@ -22,34 +22,96 @@ class SimCalculator {
     required this.abstandZumSchirm
   });
 
+  ///Lichtintensität an einem beliebigen Punkt auf dem Schirm berechen
+  double calculateIntensity(double position) {
+    ///Aufteilung in mehrere Rechnungen zur Vermeidung von Fehlern
+    double d = (spaltbreite / 2) + spaltabstand;
+    double a = sin((2 * pi * d * sin(position)) / wellenlaenge);
+    double b = sin((pi * d * sin(position)) / wellenlaenge);
+    double c = sin((pi * spaltabstand * sin(position)) / wellenlaenge);
+    double e = (pi * spaltabstand * sin(position)) / wellenlaenge;
+
+    double intensity = pow(a / b, 2) * pow(c / e, 2).toDouble();
+    return intensity;
+  }
+
+  ///Schirmbild berechnen
+  List<IntensityLine> calculateIntensityLines() {
+    double maxIntensity = calculateIntensity(0.000000001);
+
+    List<IntensityLine> lines = [];
+
+    ///optimiert die Berechnung durch auslassungen
+    int optimizer = 2;
+
+    for (int i = 1; i < width / 2; i += optimizer) {
+      for (int j = 0; j < optimizer; j++) {
+        lines.addAll (
+            [
+              IntensityLine(
+                  lineStart: Offset(width / 2 - i + j, 0),
+                  lineEnd: Offset(width / 2 - i + j, height),
+                  intensity: calculateIntensity(i * (1 / (width / 2))) * (1 / maxIntensity)
+              ),
+              IntensityLine(
+                  lineStart: Offset(width / 2 + i - j, 0),
+                  lineEnd: Offset(width / 2 + i - j, height),
+                  intensity: calculateIntensity(i * (1 / (width / 2))) * (1 / maxIntensity)
+              ),
+            ]
+        );
+      }
+    }
+
+    return lines;
+  }
+
+  ///Mittelpunkt zwischen den Spalten
   Offset resultLineStart() {
     return Offset(
-        abstandLampeSpaltPixelBerechnen() +
-            width * 0.1025,
-        height * 0.28);
+        abstandLampeSpaltPixelBerechnen() + width * 0.1025, height * 0.28);
+  }
+
+  ///genaue Startpunkte
+  Offset mitteUntererSpalt() {
+    Offset mitte = resultLineStart();
+    double spaltbreitePixel = spaltbreite * 0.01 * height * 0.0005;
+    double spaltabstandPixel = spaltabstand * 0.01 * height * 0.0005;
+    return Offset(mitte.dx, mitte.dy + spaltbreitePixel / 2 + spaltabstandPixel / 2);
+  }
+
+  Offset mitteObererSpalt() {
+    Offset mitte = resultLineStart();
+    double spaltbreitePixel = spaltbreite * 0.01 * height * 0.0005;
+    double spaltabstandPixel = spaltabstand * 0.01 * height * 0.0005;
+    return Offset(mitte.dx, mitte.dy - spaltbreitePixel / 2 - spaltabstandPixel / 2);
   }
 
   Offset lampePositionPixel() {
-    return Offset(width * 0.1,
-        height * 0.28);
+    return Offset(width * 0.1, height * 0.28);
   }
 
   double abstandLampeSpaltPixelBerechnen() {
-    return width -
-        (width * abstandZumSchirm * 0.00002 +
-            width * 0.11);
+    return width - (width * abstandZumSchirm * 0.00002 + width * 0.11);
+  }
+
+  double wellenlaengePixelBerechnen() {
+    return wellenlaenge * 0.02;
   }
 
   ///berechnet abstand des k.Maximums zum 0.Maximum (ak) in nm
   ///k element von {1; 2; 3; ...}
   ///line target = Höhe des Doppelspaltes + ak (in Pixel)
   double abstandZumNulltenMaximum(int k) {
-    double ak = tan(asin(k * wellenlaenge / spaltabstand)) * abstandZumSchirm;///Alte Formel
-    if (SimUI.useNewWrongFormula) {
-      double o = (k * wellenlaenge)/spaltabstand;
+    double ak = 0;
+    double o = (k * wellenlaenge)/(spaltabstand + (spaltbreite / 2));
+    ///formula only valid while 0 < 1
+    if (o < 1) {
       ak = sqrt(((o*o)*(abstandZumSchirm * abstandZumSchirm))/((1-o)*(1-o)));///neue Formel
     }
-    //debugPrint(ak.toString());
+    else {
+      ak = 0;
+    }
     return ak;
   }
 
