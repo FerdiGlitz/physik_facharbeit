@@ -6,6 +6,9 @@ import 'painters/line_painter.dart';
 class SimResultView extends StatefulWidget {
   final SimCalculator simCalculator;
 
+  ///optimiert die Berechnung des Schirmbildes durch auslassungen
+  static int optimizer = 1;
+
   const SimResultView({
     Key? key,
     required this.simCalculator

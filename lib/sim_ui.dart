@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
 import 'package:physik_facharbeit/sim_result_view.dart';
@@ -17,10 +18,10 @@ class _SimUIState extends State<SimUI> {
   late SimCalculator simCalculator = SimCalculator(
     height: widget.height,
     width: widget.width,
-    wellenlaenge: 600,
-    spaltabstand: 2000,
+    wellenlaenge: 500,
+    spaltabstand: 200,
     abstandZumSchirm: 20000,
-    spaltbreite: 1200
+    spaltbreite: 1500
   );
 
   TextEditingController wellenlaengeController = TextEditingController();
@@ -32,6 +33,7 @@ class _SimUIState extends State<SimUI> {
   double spaltbreiteMaximum = 4000;
   double spaltabstandMaximum = 5000;
   double abstandZumSensorMaximum = 30000;
+  String optimizer = '1';
 
   @override
   void initState() {
@@ -73,6 +75,7 @@ class _SimUIState extends State<SimUI> {
                   spaltbreiteSlider(),
                   spaltabsstandSlider(),
                   abstandZumSchirmSlider(),
+                  optimizerSlider(),
                   Text(
                     'Auslenkungswinkel des 1. Maximums: ${simCalculator.alphaBerechnen(1).round().toString()}°',
                     textScaler: const TextScaler.linear(1.5),
@@ -86,6 +89,41 @@ class _SimUIState extends State<SimUI> {
             )
           ],
         )
+    );
+  }
+
+  Widget optimizerSlider() {
+    return Row(
+      children: [
+        const SizedBox(width: 20,),
+        Expanded(
+          flex: 10,
+          child: Row(
+            children: [
+              const Text('Optimierer', textScaler: TextScaler.linear(1.5),),
+              Expanded(
+                child: Slider (
+                    value: SimResultView.optimizer.toDouble(),
+                    min: 1,
+                    max: 25,
+                    inactiveColor: Colors.grey.shade600,
+                    activeColor: Colors.limeAccent,
+                    onChanged: (value) {
+                      setState(() {
+                        optimizer = value.toInt().toString();
+                        SimResultView.optimizer = value.toInt();
+                      });
+                    }
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Text(optimizer, textScaler: const TextScaler.linear(1.5))
+        ),
+        const SizedBox(width: 20,),
+      ],
     );
   }
 

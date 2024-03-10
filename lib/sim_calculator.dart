@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:physik_facharbeit/lines/intensity_line.dart';
+import 'package:physik_facharbeit/sim_result_view.dart';
 import 'lines/line.dart';
 
 class SimCalculator {
@@ -37,15 +38,13 @@ class SimCalculator {
 
   ///Schirmbild berechnen
   List<IntensityLine> calculateIntensityLines() {
+    ///!= 0 da f(0) == unendlich
     double maxIntensity = calculateIntensity(0.000000001);
 
     List<IntensityLine> lines = [];
 
-    ///optimiert die Berechnung durch auslassungen
-    int optimizer = 2;
-
-    for (int i = 1; i < width / 2; i += optimizer) {
-      for (int j = 0; j < optimizer; j++) {
+    for (int i = 1; i < width / 2; i += SimResultView.optimizer) {
+      for (int j = 0; j < SimResultView.optimizer; j++) {
         lines.addAll (
             [
               IntensityLine(
