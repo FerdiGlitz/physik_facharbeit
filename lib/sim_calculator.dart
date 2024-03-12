@@ -234,17 +234,16 @@ class SimCalculator {
         break;
     }
     double f = fBerechnen(wellenlaenge);
-    return Color.fromRGBO(pow(r * f, 0.8).toInt(), pow(g * f, 0.8).toInt(),
-        pow(b * f, 0.8).toInt(), 1);
+    return Color.fromRGBO(pow(r * f, 0.8).toInt(), pow(g * f, 0.8).toInt(), pow(b * f, 0.8).toInt(), 1);
   }
 
   double fBerechnen(double wellenlaenge) {
     switch (wellenlaenge) {
-      case > 380 && < 420:
+      case >= 380 && < 420:
         return 0.3 + 0.7 * ((wellenlaenge - 380) / 40);
       case > 420 && < 700:
         return 1;
-      case > 700 && < 780:
+      case > 700 && <= 780:
         return 0.3 + 0.7 * ((780 - wellenlaenge) / 80);
     }
     return 1;
