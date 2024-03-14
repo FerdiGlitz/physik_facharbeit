@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
+import 'package:physik_facharbeit/sim_graph_view.dart';
 import 'package:physik_facharbeit/sim_result_view.dart';
 import 'package:physik_facharbeit/sim_top_view.dart';
 
@@ -18,10 +19,10 @@ class _SimUIState extends State<SimUI> {
   late SimCalculator simCalculator = SimCalculator(
     height: widget.height,
     width: widget.width,
-    wellenlaenge: 500,
-    spaltabstand: 200,
+    wellenlaenge: 450,
+    spaltabstand: 1500,
     abstandZumSchirm: 20000,
-    spaltbreite: 1500
+    spaltbreite: 650
   );
 
   TextEditingController wellenlaengeController = TextEditingController();
@@ -57,6 +58,9 @@ class _SimUIState extends State<SimUI> {
                       simCalculator: simCalculator,
                     ),
                     SimResultView(
+                      simCalculator: simCalculator,
+                    ),
+                    SimGraphView(
                       simCalculator: simCalculator,
                     ),
                   ]
@@ -139,7 +143,7 @@ class _SimUIState extends State<SimUI> {
               Expanded(
                 child: Slider (
                     value: simCalculator.spaltbreite,
-                    max: spaltbreiteMaximum,
+                    max: simCalculator.spaltabstand * 2 - 250,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
@@ -196,6 +200,7 @@ class _SimUIState extends State<SimUI> {
               Expanded(
                 child: Slider (
                     value: simCalculator.spaltabstand,
+                    min: simCalculator.spaltbreite / 2 + 100,
                     max: 5000,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,

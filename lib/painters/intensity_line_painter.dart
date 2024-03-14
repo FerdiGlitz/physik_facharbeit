@@ -24,5 +24,5 @@ class IntensityLinePainter extends LinePainter {
   }
 
   @override
-  bool shouldRepaint(LinePainter oldDelegate) => true;
+  bool shouldRepaint(IntensityLinePainter oldDelegate) => true;
 }

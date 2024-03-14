@@ -50,19 +50,6 @@ class _SimTopViewState extends State<SimTopView> {
           children: [
             Stack(
               children: [
-                Container(
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      lampe(),
-                      SizedBox(
-                        width: widget.simCalculator.abstandLampeSpaltPixelBerechnen(),
-                      ),
-                      spalt(),
-                    ],
-                  ),
-                ),
                 CustomPaint(
                   size: const Size.fromWidth(0.5),
                   painter: LinePainter(
@@ -80,6 +67,16 @@ class _SimTopViewState extends State<SimTopView> {
                         ),
                       ]
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    lampe(),
+                    SizedBox(
+                      width: widget.simCalculator.abstandLampeSpaltPixelBerechnen(),
+                    ),
+                    spalt(),
+                  ],
                 ),
               ],
             ),
@@ -107,7 +104,7 @@ class _SimTopViewState extends State<SimTopView> {
       children: [
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.height * 0.1 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
+          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) - ((widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) / 2),
           width: widget.simCalculator.width * 0.005,
         ),
         SizedBox(
@@ -116,7 +113,7 @@ class _SimTopViewState extends State<SimTopView> {
         ),
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.spaltabstand * 0.01 * widget.simCalculator.height * 0.0005,
+          height: widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
           width: widget.simCalculator.width * 0.005,
         ),
         SizedBox(
@@ -125,7 +122,7 @@ class _SimTopViewState extends State<SimTopView> {
         ),
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.height * 0.1 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
+          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) - ((widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) / 2),
           width: widget.simCalculator.width * 0.005,
         ),
       ],

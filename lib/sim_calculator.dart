@@ -25,12 +25,15 @@ class SimCalculator {
 
   ///Lichtintensität an einem beliebigen Punkt auf dem Schirm berechen
   double calculateIntensity(double position) {
+    ///HP bei unendlich
+    if (position == 0) {
+      position = 0.000001;
+    }
     ///Aufteilung in mehrere Rechnungen zur Vermeidung von Fehlern
-    double d = (spaltbreite / 2) + spaltabstand;
-    double a = sin((2 * pi * d * sin(position)) / wellenlaenge);
-    double b = sin((pi * d * sin(position)) / wellenlaenge);
-    double c = sin((pi * spaltabstand * sin(position)) / wellenlaenge);
-    double e = (pi * spaltabstand * sin(position)) / wellenlaenge;
+    double a = sin((2 * pi * spaltabstand * sin(position)) / wellenlaenge);
+    double b = sin((pi * spaltabstand * sin(position)) / wellenlaenge);
+    double c = sin((pi * spaltbreite * sin(position)) / wellenlaenge);
+    double e = (pi * spaltbreite * sin(position)) / wellenlaenge;
 
     double intensity = pow(a / b, 2) * pow(c / e, 2).toDouble();
     return intensity;
@@ -38,10 +41,16 @@ class SimCalculator {
 
   ///Schirmbild berechnen
   List<IntensityLine> calculateIntensityLines() {
-    ///!= 0 da f(0) == unendlich
+    ///! = 0 da f(0) == unendlich
     double maxIntensity = calculateIntensity(0.000000001);
 
-    List<IntensityLine> lines = [];
+    List<IntensityLine> lines = [
+      IntensityLine(
+          lineStart: Offset(width / 2, 0),
+          lineEnd: Offset(width / 2, height),
+          intensity: maxIntensity
+      ),
+    ];
 
     for (int i = 1; i < width / 2; i += SimResultView.optimizer) {
       for (int j = 0; j < SimResultView.optimizer; j++) {
@@ -103,7 +112,7 @@ class SimCalculator {
   ///line target = Höhe des Doppelspaltes + ak (in Pixel)
   double abstandZumNulltenMaximum(int k) {
     double ak = 0;
-    double o = (k * wellenlaenge)/(spaltabstand + (spaltbreite / 2));
+    double o = (k * wellenlaenge) / spaltabstand;
     ///formula only valid while 0 < 1
     if (o < 1) {
       ak = sqrt(((o*o)*(abstandZumSchirm * abstandZumSchirm))/((1-o)*(1-o)));///neue Formel
@@ -115,8 +124,9 @@ class SimCalculator {
   }
 
   ///Berechnet die Anzahl der Maxima
+  ///Formel durch Lehrkraft vorgegeben!
   int anzahlMaximaBerechnen() {
-    return spaltbreite ~/ wellenlaenge;
+    return spaltabstand ~/ wellenlaenge;
   }
 
   ///Berechnet alle Linien für die vorhandenen Maxima
