@@ -125,7 +125,7 @@ class SimCalculator {
   }
 
   ///Berechnet die Anzahl der Maxima
-  ///Formel durch Lehrkraft vorgegeben!
+  ///Formel durch Lehrkraft vorgegeben
   int anzahlMaximaBerechnen() {
     return spaltabstand ~/ wellenlaenge;
   }
@@ -166,6 +166,7 @@ class SimCalculator {
     return [lineBottom, lineTop];
   }
 
+  ///Berechnet den Auslenkungswinkel des k. Maximum
   double alphaBerechnen(int k) {
     double laengeAnkathete = abstandZumSchirm;
     double laengeGegenkathete = abstandZumNulltenMaximum(k);
