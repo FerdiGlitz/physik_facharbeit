@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
 import 'package:physik_facharbeit/sim_graph_view.dart';
@@ -15,7 +14,7 @@ class SimUI extends StatefulWidget {
   State<SimUI> createState() => _SimUIState();
 }
 
-class _SimUIState extends State<SimUI> {
+class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
   late SimCalculator simCalculator = SimCalculator(
     height: widget.height,
     width: widget.width,
@@ -34,7 +33,14 @@ class _SimUIState extends State<SimUI> {
   double spaltbreiteMaximum = 4000;
   double spaltabstandMaximum = 5000;
   double abstandZumSensorMaximum = 30000;
-  String optimizer = '1';
+
+  @override
+  void didChangeMetrics() {
+    setState(() {
+      simCalculator.height = MediaQuery.of(context).size.height;
+      simCalculator.width = MediaQuery.of(context).size.width;
+    });
+  }
 
   @override
   void initState() {
@@ -42,7 +48,14 @@ class _SimUIState extends State<SimUI> {
     spaltbreiteController.text = simCalculator.spaltbreite.toInt().toString();
     spaltabstandController.text = simCalculator.spaltabstand.toInt().toString();
     abstandZumSensorController.text = simCalculator.abstandZumSchirm.toInt().toString();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -75,11 +88,10 @@ class _SimUIState extends State<SimUI> {
               ),
               child: ListView(
                 children: [
-                  wellenlaengeSlider(),
-                  spaltbreiteSlider(),
-                  spaltabsstandSlider(),
-                  abstandZumSchirmSlider(),
-                  optimizerSlider(),
+                  _wellenlaengeSlider(),
+                  _spaltbreiteSlider(),
+                  _spaltabsstandSlider(),
+                  _abstandZumSchirmSlider(),
                   Text(
                     'Auslenkungswinkel des 1. Maximums: ${simCalculator.alphaBerechnen(1).round().toString()}°',
                     textScaler: const TextScaler.linear(1.5),
@@ -96,42 +108,7 @@ class _SimUIState extends State<SimUI> {
     );
   }
 
-  Widget optimizerSlider() {
-    return Row(
-      children: [
-        const SizedBox(width: 20,),
-        Expanded(
-          flex: 10,
-          child: Row(
-            children: [
-              const Text('Optimierer', textScaler: TextScaler.linear(1.5),),
-              Expanded(
-                child: Slider (
-                    value: SimResultView.optimizer.toDouble(),
-                    min: 1,
-                    max: 25,
-                    inactiveColor: Colors.grey.shade600,
-                    activeColor: Colors.limeAccent,
-                    onChanged: (value) {
-                      setState(() {
-                        optimizer = value.toInt().toString();
-                        SimResultView.optimizer = value.toInt();
-                      });
-                    }
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Text(optimizer, textScaler: const TextScaler.linear(1.5))
-        ),
-        const SizedBox(width: 20,),
-      ],
-    );
-  }
-
-  Widget spaltbreiteSlider() {
+  Widget _spaltbreiteSlider() {
     return Row(
       children: [
         const SizedBox(width: 20,),
@@ -143,7 +120,7 @@ class _SimUIState extends State<SimUI> {
               Expanded(
                 child: Slider (
                     value: simCalculator.spaltbreite,
-                    max: simCalculator.spaltabstand * 2 - 250,
+                    max: simCalculator.spaltabstand * 2,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
@@ -188,7 +165,7 @@ class _SimUIState extends State<SimUI> {
     );
   }
 
-  Widget spaltabsstandSlider() {
+  Widget _spaltabsstandSlider() {
     return Row(
       children: [
         const SizedBox(width: 20,),
@@ -200,7 +177,7 @@ class _SimUIState extends State<SimUI> {
               Expanded(
                 child: Slider (
                     value: simCalculator.spaltabstand,
-                    min: simCalculator.spaltbreite / 2 + 100,
+                    min: simCalculator.spaltbreite / 2,
                     max: 5000,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
@@ -246,7 +223,7 @@ class _SimUIState extends State<SimUI> {
     );
   }
 
-  Widget abstandZumSchirmSlider() {
+  Widget _abstandZumSchirmSlider() {
     return Row(
       children: [
         const SizedBox(width: 20,),
@@ -304,7 +281,7 @@ class _SimUIState extends State<SimUI> {
     );
   }
 
-  Widget wellenlaengeSlider() {
+  Widget _wellenlaengeSlider() {
     return Row(
       children: [
         const SizedBox(width: 20,),

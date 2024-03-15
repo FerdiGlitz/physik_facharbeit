@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:physik_facharbeit/lines/intensity_line.dart';
-import 'package:physik_facharbeit/sim_result_view.dart';
 import 'lines/line.dart';
 
 class SimCalculator {
@@ -44,26 +43,28 @@ class SimCalculator {
     ///! = 0 da f(0) == unendlich
     double maxIntensity = calculateIntensity(0.000000001);
 
-    List<IntensityLine> lines = [
-      IntensityLine(
+    List<IntensityLine> lines = [];
+
+    if (0 < spaltbreite) {
+      lines.add(
+        IntensityLine(
           lineStart: Offset(width / 2, 0),
           lineEnd: Offset(width / 2, height),
           intensity: maxIntensity
-      ),
-    ];
+        ),
+      );
 
-    for (int i = 1; i < width / 2; i += SimResultView.optimizer) {
-      for (int j = 0; j < SimResultView.optimizer; j++) {
+      for (int i = 1; i < width / 2; i++) {
         lines.addAll (
             [
               IntensityLine(
-                  lineStart: Offset(width / 2 - i + j, 0),
-                  lineEnd: Offset(width / 2 - i + j, height),
+                  lineStart: Offset(width / 2 - i, 0),
+                  lineEnd: Offset(width / 2 - i, height),
                   intensity: calculateIntensity(i * (1 / (width / 2))) * (1 / maxIntensity)
               ),
               IntensityLine(
-                  lineStart: Offset(width / 2 + i - j, 0),
-                  lineEnd: Offset(width / 2 + i - j, height),
+                  lineStart: Offset(width / 2 + i, 0),
+                  lineEnd: Offset(width / 2 + i, height),
                   intensity: calculateIntensity(i * (1 / (width / 2))) * (1 / maxIntensity)
               ),
             ]
@@ -132,12 +133,14 @@ class SimCalculator {
   ///Berechnet alle Linien für die vorhandenen Maxima
   List<Line> maximaBerechnen() {
     List<Line> lines = [];
-    for (int i = 0; i < anzahlMaximaBerechnen(); i++) {
-      lines.addAll(
-        calculateLine(
-          k: i
-        )
-      );
+    if (0 < spaltbreite) {
+      for (int i = 0; i < anzahlMaximaBerechnen(); i++) {
+        lines.addAll(
+            calculateLine(
+                k: i
+            )
+        );
+      }
     }
     return lines;
   }

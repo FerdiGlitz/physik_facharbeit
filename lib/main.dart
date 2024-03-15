@@ -32,7 +32,25 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+
+  late double screenHeight = MediaQuery.of(context).size.height;
+  late double screenWidth = MediaQuery.of(context).size.width;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeMetrics() {
+    setState(() {
+      screenHeight = MediaQuery.of(context).size.height;
+      screenWidth = MediaQuery.of(context).size.width;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             SimUI(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: screenHeight,
+              width: screenWidth,
             ),
           ],
         ),

@@ -5,9 +5,6 @@ import 'package:physik_facharbeit/sim_calculator.dart';
 class SimResultView extends StatefulWidget {
   final SimCalculator simCalculator;
 
-  ///optimiert die Berechnung des Schirmbildes durch auslassungen
-  static int optimizer = 1;
-
   const SimResultView({
     Key? key,
     required this.simCalculator
@@ -18,7 +15,7 @@ class SimResultView extends StatefulWidget {
 }
 
 class _SimResultViewState extends State<SimResultView> {
-  Color hintergrundFarbe = Colors.white70;
+  Color hintergrundFarbe = Colors.white;
 
   @override
   Widget build(BuildContext context) {

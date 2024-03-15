@@ -37,7 +37,7 @@ class _SettingsState extends State<Settings> {
                 onPressed: () => showLicensePage(
                   context: context,
                   applicationName: "Facharbeit von Ferdinand Glitz",
-                  applicationVersion: '0.1',
+                  applicationVersion: '1.0',
                   applicationIcon: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Image.asset('icon/icon.png', width: 48, height: 48,),

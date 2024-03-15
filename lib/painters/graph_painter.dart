@@ -14,10 +14,12 @@ class GraphPainter extends CustomPainter {
     paint.color = Colors.red;
     paint.strokeWidth = 2;
     paint.style = PaintingStyle.stroke;
-    for (double i = -size.width / 2; i < size.width / 2; i += 0.5) {
+    ///vermeidet doppelte Berechnung von Punkten
+    Offset tempPoint = Offset(-size.width / 2 + size.width / 2, size.height - (functionX((-size.width / 2) * (2 / size.width)) * (1/max) * size.height));
+    for (double i = -size.width / 2 + 1; i < size.width / 2; i++) {
       Offset point = Offset(i + size.width / 2, size.height - (functionX(i * (2 / size.width)) * (1/max) * size.height));
-      Offset point2 = Offset(i + 0.25 + size.width / 2, size.height - (functionX((i + 0.25) * (2 / size.width)) * (1/max) * size.height));
-      canvas.drawLine(point, point2, paint);
+      canvas.drawLine(tempPoint, point, paint);
+      tempPoint = point;
     }
   }
 

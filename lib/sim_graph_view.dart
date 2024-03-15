@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:physik_facharbeit/painters/graph_painter.dart';
 import 'package:physik_facharbeit/sim_calculator.dart';
 
 class SimGraphView extends StatefulWidget {
   final SimCalculator simCalculator;
-
-  ///optimiert die Berechnung des Schirmbildes durch auslassungen
-  static int optimizer = 1;
 
   const SimGraphView({
     Key? key,
@@ -20,7 +15,7 @@ class SimGraphView extends StatefulWidget {
 }
 
 class _SimGraphViewState extends State<SimGraphView> {
-  Color hintergrundFarbe = Colors.white70;
+  Color hintergrundFarbe = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +71,7 @@ class _SimGraphViewState extends State<SimGraphView> {
         SizedBox(
           height: widget.simCalculator.height * 0.51,
           child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: 10,
             itemBuilder: (BuildContext context, int index) {
               return Container(

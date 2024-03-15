@@ -17,7 +17,7 @@ class SimTopView extends StatefulWidget {
 
 class _SimTopViewState extends State<SimTopView> {
   Color aufbauFarbe = Colors.black;
-  Color hintergrundFarbe = Colors.white70;
+  Color hintergrundFarbe = Colors.white;
 
   late List<Line> resultLines = [
     Line(lineStart: widget.simCalculator.resultLineStart(), lineEnd: nulltesMaximumLineTarget()),
@@ -31,7 +31,7 @@ class _SimTopViewState extends State<SimTopView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: hintergrundFarbe.withOpacity(1),
+      color: hintergrundFarbe,
       child: Stack(children: [
         Row(
           children: [
