@@ -116,7 +116,7 @@ class SimCalculator {
     double o = (k * wellenlaenge) / spaltabstand;
     ///formula only valid while 0 < 1
     if (o < 1) {
-      ak = sqrt(((o*o)*(abstandZumSchirm * abstandZumSchirm))/((1-o)*(1-o)));///neue Formel
+      ak = sqrt((pow(o, 2) * pow(abstandZumSchirm, 2)) / pow(1 - o, 2));///neue Formel
     }
     else {
       ak = 0;
