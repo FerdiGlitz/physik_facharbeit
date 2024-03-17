@@ -31,6 +31,7 @@ class _SourcesState extends State<Sources> {
   
   List<Source> formeln = [
     Source(usage: "Formel für λ zu RGB", source: "http://www.olos.de/~ukern/publ/tex/pdf/dtk200504.pdf"),
+    Source(usage: "Formel für Abstand zum 0. Maximum", source: "https://www.leifiphysik.de/optik/beugung-und-interferenz/grundwissen/doppelspalt"),
     Source(usage: "Formel für Lichtintensität", source: "https://www.leifiphysik.de/optik/beugung-und-interferenz/ausblick/doppelspalt-intensitaetsverteilung")
   ];
 }
