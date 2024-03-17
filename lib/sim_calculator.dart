@@ -12,6 +12,7 @@ class SimCalculator {
   double spaltbreite;
   double spaltabstand;
   double abstandZumSchirm;
+  late final double conversionFactor = 0.00002 * width;
 
   SimCalculator({
     required this.height,
@@ -81,6 +82,15 @@ class SimCalculator {
         abstandLampeSpaltPixelBerechnen() + width * 0.1025, height * 0.28);
   }
 
+  ///Zielpunkt für das 0. Interferenzmaximum für Vogelperspektive
+  Offset nulltesMaximumLineTarget() {
+    //Fensterbreite - Schirmbreite
+    return Offset(
+        width - width * 0.005,
+        height * 0.28
+    );
+  }
+
   ///genaue Startpunkte
   Offset mitteUntererSpalt() {
     Offset mitte = resultLineStart();
@@ -106,6 +116,10 @@ class SimCalculator {
 
   double wellenlaengePixelBerechnen() {
     return wellenlaenge * 0.02;
+  }
+
+  double abstandZumSchirmPixelBerechenen() {
+    return abstandZumSchirm * conversionFactor;
   }
 
   ///berechnet abstand des k.Maximums zum 0.Maximum (ak) in nm
@@ -148,20 +162,19 @@ class SimCalculator {
   ///Berechnet die Linie in der Darstellung für das k. Maximum
   ///k element von {1; 2; 3; ...}
   List<Line> calculateLine({required int k}) {
-    double ePixel = width - width * 0.005 - resultLineStart().dx;
     double ak = abstandZumNulltenMaximum(k);
-    double stretchFactor = ePixel / abstandZumSchirm;
 
-    ///epixel / e = faktor für ak
-    double akUI = ak * stretchFactor;
-    //debugPrint('Alpha UI $k. Maximum: ${alphaBerechnen(k).toString()}');
+    double akUI = ak * conversionFactor;
+
+    double yWertNulltesMaximum = nulltesMaximumLineTarget().dy;
+
     Line lineBottom = Line(
         lineStart: resultLineStart(),
-        lineEnd: Offset(width - width * 0.005, height * 0.28 + akUI)
+        lineEnd: Offset(width - width * 0.005, yWertNulltesMaximum + akUI)
     );
     Line lineTop = Line(
         lineStart: resultLineStart(),
-        lineEnd: Offset(width - width * 0.005, height * 0.28 - akUI)
+        lineEnd: Offset(width - width * 0.005, yWertNulltesMaximum - akUI)
     );
     return [lineBottom, lineTop];
   }

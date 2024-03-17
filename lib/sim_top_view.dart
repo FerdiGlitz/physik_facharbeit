@@ -20,18 +20,14 @@ class _SimTopViewState extends State<SimTopView> {
   Color hintergrundFarbe = Colors.white;
 
   late List<Line> resultLines = [
-    Line(lineStart: widget.simCalculator.resultLineStart(), lineEnd: nulltesMaximumLineTarget()),
-    //Linie zum 1.Maximum
-    Line(
-      lineStart: widget.simCalculator.resultLineStart(),
-      lineEnd: Offset(widget.simCalculator.width - widget.simCalculator.width * 0.005, widget.simCalculator.height * 0.28 + widget.simCalculator.abstandZumNulltenMaximum(1) * 0.01)
-    )
+    //0. Maximum
+    Line(lineStart: widget.simCalculator.resultLineStart(), lineEnd: widget.simCalculator.nulltesMaximumLineTarget()),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: hintergrundFarbe,
+      color: hintergrundFarbe.withOpacity(1),
       child: Stack(children: [
         Row(
           children: [
@@ -99,31 +95,34 @@ class _SimTopViewState extends State<SimTopView> {
   }
 
   Widget spalt() {
+    final double conversion = widget.simCalculator.conversionFactor;
+    final double slitWidth = widget.simCalculator.width * 0.005;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) - ((widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) / 2),
-          width: widget.simCalculator.width * 0.005,
+          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * conversion) - ((widget.simCalculator.spaltabstand * conversion - widget.simCalculator.spaltbreite * conversion) / 2),
+          width: slitWidth,
         ),
         SizedBox(
-          height: widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
-          width: widget.simCalculator.width * 0.005,
+          height: widget.simCalculator.spaltbreite * conversion,
+          width: slitWidth,
         ),
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
-          width: widget.simCalculator.width * 0.005,
+          height: widget.simCalculator.spaltabstand * conversion - widget.simCalculator.spaltbreite * conversion,
+          width: slitWidth,
         ),
         SizedBox(
-          height: widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005,
-          width: widget.simCalculator.width * 0.005,
+          height: widget.simCalculator.spaltbreite * conversion,
+          width: slitWidth,
         ),
         Container(
           color: aufbauFarbe,
-          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) - ((widget.simCalculator.spaltabstand * 0.01 - widget.simCalculator.spaltbreite * 0.01 * widget.simCalculator.height * 0.0005) / 2),
-          width: widget.simCalculator.width * 0.005,
+          height: widget.simCalculator.height * 0.11 - (widget.simCalculator.spaltbreite * conversion) - ((widget.simCalculator.spaltabstand * conversion - widget.simCalculator.spaltbreite * conversion) / 2),
+          width: slitWidth,
         ),
       ],
     );
@@ -134,13 +133,6 @@ class _SimTopViewState extends State<SimTopView> {
       height: double.infinity,
       width: widget.simCalculator.width * 0.005,
       color: aufbauFarbe,
-    );
-  }
-
-  Offset nulltesMaximumLineTarget() {
-    return Offset(
-        widget.simCalculator.width - widget.simCalculator.width * 0.005,
-        widget.simCalculator.height * 0.28
     );
   }
 }
