@@ -27,7 +27,7 @@ class SimCalculator {
   double calculateIntensity(double position) {
     ///HP bei unendlich
     if (position == 0) {
-      position = 0.000001;
+      position = 0.000000001;
     }
     ///Aufteilung in mehrere Rechnungen zur Vermeidung von Fehlern
     double a = sin((2 * pi * spaltabstand * sin(position)) / wellenlaenge);
