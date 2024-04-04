@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:flutter/animation.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/lines/intensity_line.dart';
 import 'lines/line.dart';
 

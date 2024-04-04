@@ -34,21 +34,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
-  late double screenHeight = MediaQuery.of(context).size.height;
-  late double screenWidth = MediaQuery.of(context).size.width;
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeMetrics() {
-    setState(() {
-      screenHeight = MediaQuery.of(context).size.height;
-      screenWidth = MediaQuery.of(context).size.width;
-    });
   }
 
   @override
@@ -72,8 +61,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         child: Column(
           children: [
             SimUI(
-              height: screenHeight,
-              width: screenWidth,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
             ),
           ],
         ),
