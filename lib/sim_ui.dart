@@ -39,8 +39,8 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     setState(() {
-      _simCalculator.height = MediaQuery.of(context).size.height;
-      _simCalculator.width = MediaQuery.of(context).size.width;
+      _simCalculator.height = widget.height;
+      _simCalculator.width = widget.width;
     });
   }
 

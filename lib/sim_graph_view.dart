@@ -6,9 +6,9 @@ class SimGraphView extends StatefulWidget {
   final SimCalculator simCalculator;
 
   const SimGraphView({
-    Key? key,
+    super.key,
     required this.simCalculator
-  }) : super(key: key);
+  });
 
   @override
   State<SimGraphView> createState() => _SimGraphViewState();
