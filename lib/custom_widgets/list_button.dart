@@ -6,7 +6,7 @@ class ListButton extends StatefulWidget {
   final Color textColor;
   final Color iconColor;
 
-  const ListButton({Key? key, required this.onPressed, required this.title, this.textColor = Colors.black, this.iconColor = Colors.black}) : super(key: key);
+  const ListButton({super.key, required this.onPressed, required this.title, this.textColor = Colors.black, this.iconColor = Colors.black});
 
   @override
   State<ListButton> createState() => _ListButtonState();

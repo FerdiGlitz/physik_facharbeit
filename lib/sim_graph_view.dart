@@ -42,7 +42,7 @@ class _SimGraphViewState extends State<SimGraphView> {
               ),
             ),
             Container(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               width: widget.simCalculator.width,
               height: widget.simCalculator.height * 0.04,
               child: const Row(

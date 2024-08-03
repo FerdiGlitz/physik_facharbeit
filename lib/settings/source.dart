@@ -8,7 +8,7 @@ class Source {
 
   Widget toWidget() {
     return InkWell(
-        child: SelectableText('$usage: $source', textScaleFactor: 2,),
+        child: SelectableText('$usage: $source', textScaler: const TextScaler.linear(2),),
     );
   }
 }
