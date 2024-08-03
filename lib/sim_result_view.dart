@@ -6,9 +6,9 @@ class SimResultView extends StatefulWidget {
   final SimCalculator simCalculator;
 
   const SimResultView({
-    Key? key,
+    super.key,
     required this.simCalculator
-  }) : super(key: key);
+  });
 
   @override
   State<SimResultView> createState() => _SimResultViewState();

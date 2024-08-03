@@ -15,15 +15,6 @@ class SimUI extends StatefulWidget {
 }
 
 class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
-  late final SimCalculator _simCalculator = SimCalculator(
-    height: widget.height,
-    width: widget.width,
-    wellenlaenge: 450,
-    spaltabstand: 1500,
-    abstandZumSchirm: 20000,
-    spaltbreite: 300
-  );
-
   TextEditingController wellenlaengeController = TextEditingController();
   TextEditingController spaltbreiteController = TextEditingController();
   TextEditingController abstandZumSensorController = TextEditingController();
@@ -39,17 +30,17 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     setState(() {
-      _simCalculator.height = widget.height;
-      _simCalculator.width = widget.width;
+      SimCalculator.calculator?.height = widget.height;
+      SimCalculator.calculator?.width = widget.width;
     });
   }
 
   @override
   void initState() {
-    wellenlaengeController.text = _simCalculator.wellenlaenge.toInt().toString();
-    spaltbreiteController.text = _simCalculator.spaltbreite.toInt().toString();
-    spaltabstandController.text = _simCalculator.spaltabstand.toInt().toString();
-    abstandZumSensorController.text = _simCalculator.abstandZumSchirm.toInt().toString();
+    wellenlaengeController.text = SimCalculator.calculator!.wellenlaenge.toInt().toString();
+    spaltbreiteController.text = SimCalculator.calculator!.spaltbreite.toInt().toString();
+    spaltabstandController.text = SimCalculator.calculator!.spaltabstand.toInt().toString();
+    abstandZumSensorController.text = SimCalculator.calculator!.abstandZumSchirm.toInt().toString();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -70,13 +61,13 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
                 child: PageView(
                   children: <Widget> [
                     SimTopView(
-                      simCalculator: _simCalculator,
+                      simCalculator: SimCalculator.calculator!,
                     ),
                     SimResultView(
-                      simCalculator: _simCalculator,
+                      simCalculator: SimCalculator.calculator!,
                     ),
                     SimGraphView(
-                      simCalculator: _simCalculator,
+                      simCalculator: SimCalculator.calculator!,
                     ),
                   ]
                 )
@@ -98,11 +89,11 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
                     _abstandZumSchirmSlider(),
                     _kSlider(),
                     Text(
-                      'Auslenkungswinkel des k. Maximums: ${_simCalculator.alphaBerechnen(_k).toStringAsFixed(2)}°',
+                      'Auslenkungswinkel des k. Maximums: ${SimCalculator.calculator!.alphaBerechnen(_k).toStringAsFixed(2)}°',
                       textScaler: const TextScaler.linear(1.5),
                     ),
                     Text(
-                      'Abstand zum 0. Maximum des k. Maximums: ${_simCalculator.abstandZumNulltenMaximum(_k).toStringAsFixed(2)}nm',
+                      'Abstand zum 0. Maximum des k. Maximums: ${SimCalculator.calculator!.abstandZumNulltenMaximum(_k).toStringAsFixed(2)}nm',
                       textScaler: const TextScaler.linear(1.5),
                     ),
                   ],
@@ -125,7 +116,7 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               Expanded(
                 child: Slider (
                     value: _k.toDouble(),
-                    max: _simCalculator.anzahlMaximaBerechnen().toDouble(),
+                    max: SimCalculator.calculator!.anzahlMaximaBerechnen().toDouble(),
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
@@ -158,14 +149,14 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               const Text('Spaltbreite', textScaler: TextScaler.linear(1.5),),
               Expanded(
                 child: Slider (
-                    value: _simCalculator.spaltbreite,
-                    max: _simCalculator.spaltabstand * 2,
+                    value: SimCalculator.calculator!.spaltbreite,
+                    max: SimCalculator.calculator!.spaltabstand * 2,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
                       setState(() {
                         spaltbreiteController.text = value.toInt().toString();
-                        _simCalculator.spaltbreite = value.toInt().toDouble();
+                        SimCalculator.calculator!.spaltbreite = value.toInt().toDouble();
                       });
                     }
                 ),
@@ -181,18 +172,18 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               if (double.parse(newValue) < 20000) {
                 if (double.parse(newValue) < _spaltbreiteMaximum) {
                   setState(() {
-                    _simCalculator.spaltbreite = double.parse(newValue);
+                    SimCalculator.calculator!.spaltbreite = double.parse(newValue);
                   });
                 } else {
                   setState(() {
                     _spaltbreiteMaximum = double.parse(newValue);
-                    _simCalculator.spaltbreite = double.parse(newValue);
+                    SimCalculator.calculator!.spaltbreite = double.parse(newValue);
                   });
                 }
               } else {
                 setState(() {
                   _spaltbreiteMaximum = 20000;
-                  _simCalculator.spaltbreite = 20000;
+                  SimCalculator.calculator!.spaltbreite = 20000;
                   spaltbreiteController.text = '20000';
                 });
               }
@@ -213,15 +204,15 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               const Text('Spaltabstand', textScaler: TextScaler.linear(1.5),),
               Expanded(
                 child: Slider (
-                    value: _simCalculator.spaltabstand,
-                    min: _simCalculator.spaltbreite / 2,
+                    value: SimCalculator.calculator!.spaltabstand,
+                    min: SimCalculator.calculator!.spaltbreite / 2,
                     max: 5000,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
                       setState(() {
-                        _simCalculator.spaltabstand = value.toInt().toDouble();
-                        spaltabstandController.text = _simCalculator.spaltabstand.toInt().toString();
+                        SimCalculator.calculator!.spaltabstand = value.toInt().toDouble();
+                        spaltabstandController.text = SimCalculator.calculator!.spaltabstand.toInt().toString();
                       });
                     }
                 ),
@@ -237,18 +228,18 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               if (double.parse(newValue) < 20000) {
                 if (double.parse(newValue) < _spaltabstandMaximum) {
                   setState(() {
-                    _simCalculator.spaltabstand = double.parse(newValue);
+                    SimCalculator.calculator!.spaltabstand = double.parse(newValue);
                   });
                 } else {
                   setState(() {
                     _spaltabstandMaximum = double.parse(newValue);
-                    _simCalculator.spaltabstand = double.parse(newValue);
+                    SimCalculator.calculator!.spaltabstand = double.parse(newValue);
                   });
                 }
               } else {
                 setState(() {
                   _spaltabstandMaximum = 20000;
-                  _simCalculator.spaltabstand = 20000;
+                  SimCalculator.calculator!.spaltabstand = 20000;
                   spaltabstandController.text = '20000';
                 });
               }
@@ -269,15 +260,15 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               const Text('Abstand zum Schirm', textScaler: TextScaler.linear(1.5),),
               Expanded(
                 child: Slider (
-                    value: _simCalculator.abstandZumSchirm,
+                    value: SimCalculator.calculator!.abstandZumSchirm,
                     min: 200,
                     max: _abstandZumSchirmMaximum,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
                       setState(() {
-                        _simCalculator.abstandZumSchirm = value.toInt().toDouble();
-                        abstandZumSensorController.text = _simCalculator.abstandZumSchirm.toInt().toString();
+                        SimCalculator.calculator!.abstandZumSchirm = value.toInt().toDouble();
+                        abstandZumSensorController.text = SimCalculator.calculator!.abstandZumSchirm.toInt().toString();
                       });
                     }
                 ),
@@ -293,18 +284,18 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               if (double.parse(newValue) < 30000) {
                 if (double.parse(newValue) < _spaltbreiteMaximum) {
                   setState(() {
-                    _simCalculator.abstandZumSchirm = double.parse(newValue);
+                    SimCalculator.calculator!.abstandZumSchirm = double.parse(newValue);
                   });
                 } else {
                   setState(() {
                     _abstandZumSchirmMaximum = double.parse(newValue);
-                    _simCalculator.abstandZumSchirm = double.parse(newValue);
+                    SimCalculator.calculator!.abstandZumSchirm = double.parse(newValue);
                   });
                 }
               } else {
                 setState(() {
                   _abstandZumSchirmMaximum = 30000;
-                  _simCalculator.abstandZumSchirm = 30000;
+                  SimCalculator.calculator!.abstandZumSchirm = 30000;
                   abstandZumSensorController.text = '30000';
                 });
               }
@@ -325,15 +316,15 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               const Text('Wellenlänge', textScaler: TextScaler.linear(1.5),),
               Expanded(
                 child: Slider (
-                    value: _simCalculator.wellenlaenge,
+                    value: SimCalculator.calculator!.wellenlaenge,
                     min: 380,
                     max: 780,
                     inactiveColor: Colors.grey.shade600,
                     activeColor: Colors.limeAccent,
                     onChanged: (value) {
                       setState(() {
-                        _simCalculator.wellenlaenge = value.toInt().toDouble();
-                        wellenlaengeController.text = _simCalculator.wellenlaenge.toInt().toString();
+                        SimCalculator.calculator!.wellenlaenge = value.toInt().toDouble();
+                        wellenlaengeController.text = SimCalculator.calculator!.wellenlaenge.toInt().toString();
                       });
                     }
                 ),
@@ -349,18 +340,18 @@ class _SimUIState extends State<SimUI> with WidgetsBindingObserver {
               if (double.parse(newValue) < 780) {
                 if (double.parse(newValue) < _wellenlaengeMaximum) {
                   setState(() {
-                    _simCalculator.wellenlaenge = double.parse(newValue);
+                    SimCalculator.calculator!.wellenlaenge = double.parse(newValue);
                   });
                 } else {
                   setState(() {
                     _wellenlaengeMaximum = double.parse(newValue);
-                    _simCalculator.wellenlaenge = double.parse(newValue);
+                    SimCalculator.calculator!.wellenlaenge = double.parse(newValue);
                   });
                 }
               } else {
                 setState(() {
                   _wellenlaengeMaximum = 780;
-                  _simCalculator.wellenlaenge = 780;
+                  SimCalculator.calculator!.wellenlaenge = 780;
                   wellenlaengeController.text = '780';
                 });
               }

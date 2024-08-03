@@ -1,10 +1,11 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/lines/intensity_line.dart';
 import 'lines/line.dart';
 
 class SimCalculator {
+  static BuildContext? context;
+  static SimCalculator? calculator;
   double height;
   double width;
   double wellenlaenge;

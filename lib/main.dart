@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:physik_facharbeit/settings/settings.dart';
+import 'package:physik_facharbeit/sim_calculator.dart';
 import 'package:physik_facharbeit/sim_ui.dart';
 
 void main() {
@@ -42,6 +43,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    SimCalculator.calculator = SimCalculator(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        wellenlaenge: 450,
+        spaltabstand: 1500,
+        abstandZumSchirm: 20000,
+        spaltbreite: 300
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
